@@ -11,23 +11,21 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
+import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.Gender;
+import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
 import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
-import hulearnSideProject.com.hulearn.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -35,8 +33,6 @@ import lombok.RequiredArgsConstructor;
 public class PatientController {
 
 	private static final Logger log = LoggerFactory.getLogger(PatientController.class);
-	
-	private final PatientService patientService;
 	
 	private final TuserPatiImgInfRepository imgRepository;
 	
@@ -54,19 +50,20 @@ public class PatientController {
 	@Transactional
 	public String savePatient(@RequestParam(name = "patiNm") String patiNm,
 							  @RequestParam(name = "age") int age,
-							  @RequestParam(name = "genCd") String genCd,
-							  @RequestParam(name = "diseaseYn") String diseaseYn,
+							  @RequestParam(name = "genCd") Gender genCd,
+							  @RequestParam(name = "diseaseYn") YN diseaseYn,
 							  @RequestParam(name = "files",required = false) MultipartFile[] files,
 							  Model model) throws IOException {
 
 		try {
+			
 			// 1. 환자 저장
 			TuserPatiBas patient = TuserPatiBas.builder()
 												.patiNm(patiNm)
 												.age(age)
 												.genCd(genCd)
 												.diseaseYn(diseaseYn)
-												.delYn("N")
+												.delYn(YN.N)
 												.hpNo(null)
 												.regrNo("KIMJAEWOO")
 												.regPgmUrl("/patients/save")
@@ -98,7 +95,7 @@ public class PatientController {
 															.pati(patient)
 															.imgUrl(imageUrl)
 															.imgNm(originalFilename)
-															.delYn("N")
+															.delYn(YN.N)
 															.regrNo("KIMJAEWOO")
 															.regPgmUrl("/patients/save")
 															.regDts(LocalDate.now())
@@ -121,39 +118,6 @@ public class PatientController {
 		return "patient";
 	}
 	
-	@PostMapping
-	public ResponseEntity<TuserPatiBas> save(@RequestBody TuserPatiBas patient) {
-		return ResponseEntity.ok(patientService.savePatient(patient));
-	}
-
-	@GetMapping
-	public ResponseEntity<List<TuserPatiBas>> findAll() {
-		return ResponseEntity.ok(patientService.getAllPatients());
-	}
-
-	/**
-	 * @content 조회 api
-	 * @param id
-	 * @return
-	 */
-	@GetMapping("/api/patients/{id}")
-	public ResponseEntity<TuserPatiBas> findById(@PathVariable(name="id") Integer id) {
-		TuserPatiBas pati = patientService.getPatientById(id);
-		return pati != null ? ResponseEntity.ok(pati) : ResponseEntity.notFound().build();
-	}
-
-	/**
-	 * @content delete api
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping("/api/patients/{id}")
-	public ResponseEntity<Void> delete(@PathVariable(name="id") Integer id) {
-		patientService.deletePatient(id);
-		return ResponseEntity.noContent().build();
-	}
-	
-	
 	/**
 	 * @content 환자 정보 화면
 	 * @param patiNo
@@ -166,7 +130,7 @@ public class PatientController {
 			.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
 
 		model.addAttribute("patient", patient);
-		return "redirect:/patient/"; // 같은 화면 재활용
+		return "redirect:/patient/";
 	}
 	
 	/**
@@ -186,8 +150,8 @@ public class PatientController {
 	public String updatePatient(@PathVariable(name="patiNo") Integer patiNo,
 								@RequestParam(name="patiNm") String patiNm,
 								@RequestParam(name="age") int age,
-								@RequestParam(name="genCd") String genCd,
-								@RequestParam(name="diseaseYn") String diseaseYn,
+								@RequestParam(name="genCd") Gender genCd,
+								@RequestParam(name="diseaseYn") YN diseaseYn,
 								@RequestParam(name="files",required = false) MultipartFile[] files,
 								Model model) throws IOException {
 
@@ -223,17 +187,17 @@ public class PatientController {
 					String imageUrl = "http://localhost:8080/uploads/" + newFileName;
 
 					TuserPatiImgInf image = TuserPatiImgInf.builder()
-							.pati(patient)
-							.imgUrl(imageUrl)
-							.imgNm(originalFilename)
-							.delYn("N")
-							.regrNo("KIMJAEWOO")
-							.regPgmUrl("/patients/update")
-							.regDts(LocalDate.now())
-							.modrNo("KIMJAEWOO")
-							.modPgmUrl("/patients/update")
-							.modDts(LocalDate.now())
-							.build();
+															.pati(patient)
+															.imgUrl(imageUrl)
+															.imgNm(originalFilename)
+															.delYn(YN.N)
+															.regrNo("KIMJAEWOO")
+															.regPgmUrl("/patients/update")
+															.regDts(LocalDate.now())
+															.modrNo("KIMJAEWOO")
+															.modPgmUrl("/patients/update")
+															.modDts(LocalDate.now())
+															.build();
 
 					imgRepository.save(image);
 				}
@@ -257,7 +221,7 @@ public class PatientController {
 	    TuserPatiBas patient = patiRepository.findById(patiNo)
 	        .orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
 
-	    patient.setDelYn("Y");
+	    patient.setDelYn(YN.Y);
 	    patient.setModDts(LocalDate.now());
 	    patiRepository.save(patient);
 
@@ -278,9 +242,9 @@ public class PatientController {
 	    List<TuserPatiBas> patients;
 
 	    if (patiNm != null && !patiNm.isEmpty()) {
-	        patients = patiRepository.findByPatiNmContainingAndDelYn(patiNm, "N");
+	        patients = patiRepository.findByPatiNmContainingAndDelYn(patiNm, YN.N);
 	    } else {
-	        patients = patiRepository.findByDelYn("N");
+	        patients = patiRepository.findByDelYn(YN.N);
 	    }
 
 	    model.addAttribute("patients", patients);
@@ -294,7 +258,7 @@ public class PatientController {
 	        .orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
 
 	    List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo)
-	            .stream().filter(img -> !"Y".equals(img.getDelYn())).toList();
+	    											.stream().filter(img -> !"Y".equals(img.getDelYn())).toList();
 
 	    model.addAttribute("patient", patient);
 	    model.addAttribute("images", images);
