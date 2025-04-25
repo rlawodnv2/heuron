@@ -1,6 +1,12 @@
 화면에서 저장할 수 있는 간단한 게시판과
 API 호출할 수 있는 간단한 코드를 작성해보았습니다. 
 
+프로젝트 구성
+DB : MYSQL
+BACK-END : SPRING-BOOT, JAVA17, JPA
+FRONT-END : THYMLEAF
+
+
 아래는 주요 패키지 및 파일 설명입니다.
 
 패키지명|파일명|설명
@@ -77,4 +83,78 @@ PatientController
 
 문제 사항:
 enum을 적용할 시 index 오류가 발생하고 있음.
+YN 값의 경우에는 enum -> Character로 다시 변경
+GenCd 값의 경우에는 enum -> String으로 다시 변경
 
+
+MYSQL TABLE SQL
+
+DROP TABLE hulearn.TCOMM_GRP_CD_BAS;
+DROP TABLE hulearn.TCOMM_CD_DTL;
+DROP TABLE hulearn.TUSER_PATI_BAS;
+DROP TABLE hulearn.TUSER_PATI_IMG_INF;
+
+#공통 코드 그룹 
+CREATE TABLE hulearn.TCOMM_GRP_CD_BAS (
+	GRP_CD VARCHAR(10), #그룹코드
+    GRP_CD_NM VARCHAR(100), #그룹코드명
+    USE_YN CHAR, #사용여부
+    REGR_NO VARCHAR(20) NOT NULL, #생성자 번호
+    REG_PGM_URL VARCHAR(100) NOT NULL, #생성 프로그램 URL
+    REG_DTS DATE NOT NULL, #생성 일자
+    MODR_NO VARCHAR(20) NOT NULL, #수정자 번호
+    MOD_PGM_URL VARCHAR(100) NOT NULL, #수정 프로그램 URL
+    MOD_DTS DATE NOT NULL, #수정 일
+    CONSTRAINT TCOMM_GRP_CD_BAS_PK PRIMARY KEY(GRP_CD)
+);
+
+CREATE TABLE hulearn.TCOMM_CD_DTL (
+	GRP_CD VARCHAR(10), #그룹코드
+    CD VARCHAR(10), #코드
+    CD_NM VARCHAR(100), #코드명
+    DISP_PRIR INT(3), #전시우선순위
+    USE_YN CHAR, #사용여부
+    REGR_NO VARCHAR(20) NOT NULL, #생성자 번호
+    REG_PGM_URL VARCHAR(100) NOT NULL, #생성 프로그램 URL
+    REG_DTS DATE NOT NULL, #생성 일자
+    MODR_NO VARCHAR(20) NOT NULL, #수정자 번호
+    MOD_PGM_URL VARCHAR(100) NOT NULL, #수정 프로그램 URL
+    MOD_DTS DATE NOT NULL, #수정 일
+    CONSTRAINT TCOMM_CD_DTL_PK PRIMARY KEY(GRP_CD, CD),
+    FOREIGN KEY (GRP_CD) REFERENCES hulearn.TCOMM_GRP_CD_BAS (GRP_CD)
+);
+
+#이름, 나이, 성별, 질병 여부 
+CREATE TABLE hulearn.TUSER_PATI_BAS (
+	PATI_NO INT(11) NOT NULL AUTO_INCREMENT, #환자 번호
+    PATI_NM VARCHAR(20) NOT NULL, #환자 명
+    AGE INT(3) NOT NULL, #나이
+    GEN_CD VARCHAR(10) NOT NULL, #성별
+    DISEASE_YN CHAR NOT NULL, #질병 여부
+    DEL_YN CHAR NOT NULL, #삭제 여부
+    HP_NO VARCHAR(13), #핸드폰 번호
+    REGR_NO VARCHAR(20) NOT NULL, #생성자 번호
+    REG_PGM_URL VARCHAR(100) NOT NULL, #생성 프로그램 URL
+    REG_DTS DATE NOT NULL, #생성 일자
+    MODR_NO VARCHAR(20) NOT NULL, #수정자 번호
+    MOD_PGM_URL VARCHAR(100) NOT NULL, #수정 프로그램 URL
+    MOD_DTS DATE NOT NULL, #수정 일
+    CONSTRAINT TUSER_PATI_BAS_PK PRIMARY KEY(PATI_NO)
+);
+
+#이미지 정보
+CREATE TABLE hulearn.TUSER_PATI_IMG_INF (
+	IMG_NO INT(11) NOT NULL AUTO_INCREMENT, # 이미지 번호
+    PATI_NO INT(11) NOT NULL, # 환자 번호
+    IMG_URL VARCHAR(500) NOT NULL, #이미지 URL
+    IMG_NM VARCHAR(100) NOT NULL, #이미지명
+    DEL_YN CHAR NOT NULL, #삭제 여부
+    REGR_NO VARCHAR(20) NOT NULL, # 생성자 번호
+    REG_PGM_URL VARCHAR(100) NOT NULL, # 생성 프로그램 URL
+    REG_DTS DATE NOT NULL, # 생성 일자
+    MODR_NO VARCHAR(20) NOT NULL, # 수정자 번호
+    MOD_PGM_URL VARCHAR(100) NOT NULL, #수정 프로그램 URL
+    MOD_DTS DATE NOT NULL, # 수정 일자
+    CONSTRAINT TUSER_PATI_IMG_INF_PK PRIMARY KEY(IMG_NO),
+    FOREIGN KEY (PATI_NO) REFERENCES hulearn.TUSER_PATI_BAS (PATI_NO)
+);
