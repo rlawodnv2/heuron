@@ -77,4 +77,3 @@ PatientController
 
 문제 사항:
 enum을 적용할 시 index 오류가 발생하고 있음.
-
