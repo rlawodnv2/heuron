@@ -1,10 +1,9 @@
-화면에서 저장할 수 있는 간단한 게시판과
-API 호출할 수 있는 간단한 코드를 작성해보았습니다. 
+프로젝트 개요
+간단한 게시판과 API 호출을 위한 기능을 구현한 프로젝트입니다.
 
-프로젝트 구성
-DB : MYSQL
-BACK-END : SPRING-BOOT, JAVA17, JPA
-FRONT-END : THYMLEAF
+DB: MySQL
+Back-End: Spring Boot, Java 17, JPA
+Front-End: Thymeleaf
 
 
 아래는 주요 패키지 및 파일 설명입니다.
