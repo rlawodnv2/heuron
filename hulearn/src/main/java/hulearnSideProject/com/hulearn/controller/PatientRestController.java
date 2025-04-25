@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import hulearnSideProject.com.hulearn.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +38,9 @@ public class PatientRestController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/api/patient/{patiNo}/{delYn}")
+	@GetMapping("/api/patient/{patiNo}")
 	public ResponseEntity<TuserPatiBas> findById(@PathVariable(name="patiNo") Integer patiNo
-													,@PathVariable(name="delYn") Character delYn) {
+													,@RequestParam(name="delYn") Character delYn) {
 		TuserPatiBas pati = patientService.getPatientById(patiNo, delYn);
 		
 		if (delYn == null) {
@@ -65,8 +65,8 @@ public class PatientRestController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PostMapping("/api/patient/update/{id}")
-	public ResponseEntity<TuserPatiBas> update(@PathVariable("id") Integer patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
+	@PostMapping("/api/patient/update/{patiNo}")
+	public ResponseEntity<TuserPatiBas> update(@PathVariable("patiNo") Integer patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
 		LocalDate nowDate = LocalDate.now();
 
 		TuserPatiBas patient = patientService.getPatientById(patiNo);

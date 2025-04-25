@@ -8,7 +8,7 @@
 	<h1>환자 목록</h1>
 
 	<form th:action="@{/patients/list}" method="get">
-		<input type="text" name="keyword" th:value="${keyword}" placeholder="이름 검색"/>
+		<input type="text" name="patiNm" th:value="${keyword}" placeholder="이름 검색"/>
 		<button type="submit">검색</button>
 	</form>
 
