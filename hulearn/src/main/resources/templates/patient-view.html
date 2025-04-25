@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>환자 상세</title>
+</head>
+<body>
+	<h1>환자 상세</h1>
+	
+	<form th:action="@{'/patients/update/' + ${patient.patiNo}}" method="post" enctype="multipart/form-data">
+		<p>
+			<strong>이름:</strong>
+			<input type="text" name="patiNm" th:value="${patient.patiNm}"/>
+		</p>
+		<p>
+			<strong>나이:</strong>
+			<input type="text" name="age" th:value="${patient.age}"/>
+		</p>
+		<p>
+			<strong>성별:</strong>
+			<input type="text" name="genCd" th:value="${patient.genCd}"/>
+		</p>
+		<p>
+			<strong>질병 여부:</strong>
+			<input type="text" name="diseaseYn" th:value="${patient.diseaseYn}"/>
+		</p>
+	
+		<p>
+			<strong>이미지 업로드 (여러 개):</strong>
+			<input type="file" name="files" multiple/>
+		</p>
+		<button type="submit">수정하기</button>
+	</form>
+	
+	<h3>이미지 목록</h3>
+	<div th:each="img : ${images}">
+		<form th:action="@{'/image/delete/'+${img.imgNo}+'/'+${patient.patiNo}}" method="post">
+			<p th:text="${img.imgNm}"></p>
+			<img th:src="${img.imgUrl}" alt="이미지" style="max-width: 300px;"/>
+			<button type="submit">이미지 삭제</button>
+		</form>
+	</div>
+
+	<form th:action="@{'/patients/delete/' + ${patient.patiNo}}" method="post" style="margin-top: 20px;">
+		<button type="submit">삭제</button>
+	</form>
+
+	
+	<br/>
+	<a th:href="@{/patients/list}">목록으로</a>
+</body>
+</html>

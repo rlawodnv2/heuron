@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>이미지 업로드</title>
+</head>
+<body>
+	<h1>이미지 업로드 테스트</h1>
+
+	<form method="post" enctype="multipart/form-data" th:action="@{'/images/upload/' + ${patiNo}}">
+		<label>환자 번호:</label>
+		<input type="text" name="patiNo" th:value="${patiNo}" readonly/><br/><br/>
+
+		<label>이미지 파일 선택:</label>
+		<input type="file" name="file" required/><br/><br/>
+
+		<button type="submit">업로드</button>
+	</form>
+
+	<br/>
+	<div th:if="${imageUrl != null}">
+		<p><strong>업로드 완료!</strong></p>
+		<img th:src="${imageUrl}" alt="Uploaded Image" width="300"/>
+		<p th:text="${imageUrl}"></p>
+	</div>
+</body>
+</html>

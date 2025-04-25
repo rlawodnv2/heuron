@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>환자 목록</title>
+</head>
+<body>
+	<h1>환자 목록</h1>
+
+	<form th:action="@{/patients/list}" method="get">
+		<input type="text" name="keyword" th:value="${keyword}" placeholder="이름 검색"/>
+		<button type="submit">검색</button>
+	</form>
+
+	<table border="1">
+		<tr>
+			<th>번호</th>
+			<th>이름</th>
+			<th>나이</th>
+			<th>성별</th>
+			<th>질병 여부</th>
+			<th>삭제 여부</th>
+			<th>상세</th>
+		</tr>
+		<tr th:each="p : ${patients}">
+			<td th:text="${p.patiNo}">1</td>
+			<td th:text="${p.patiNm}">홍길동</td>
+			<td th:text="${p.age}">30</td>
+			<td th:text="${p.genCd}">M</td>
+			<td th:text="${p.diseaseYn}">Y</td>
+			<td th:text="${p.delYn}">N</td>
+			<td>
+				<a th:href="@{'/patients/view/' + ${p.patiNo}}">보기</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

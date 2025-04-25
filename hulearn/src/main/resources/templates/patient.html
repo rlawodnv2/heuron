@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>환자 등록</title>
+</head>
+<body>
+	<h1>환자 등록</h1>
+
+	<form th:action="@{/patients/save}" method="post" enctype="multipart/form-data">
+		<label>이름:</label>
+		<input type="text" name="patiNm" required/><br/><br/>
+
+		<label>나이:</label>
+		<input type="number" name="age" required/><br/><br/>
+
+		<label>성별 코드:</label>
+		<input type="text" name="genCd" required/><br/><br/>
+
+		<label>질병 여부 (Y/N):</label>
+		<input type="text" name="diseaseYn" required/><br/><br/>
+
+		<label>이미지 업로드 (여러 개):</label>
+		<input type="file" name="files" multiple/><br/><br/>
+
+		<button type="submit">저장</button>
+	</form>
+
+	<div th:if="${message != null}">
+		<p th:text="${message}"></p>
+	</div>
+</body>
+</html>
