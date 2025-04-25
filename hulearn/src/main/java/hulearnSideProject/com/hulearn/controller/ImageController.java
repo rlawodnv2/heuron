@@ -47,7 +47,7 @@ public class ImageController {
 	    	if(img.getImgNo() != imgNo) {
 	    		continue;
 	    	}
-	        img.setDelYn(YN.Y);
+	        img.setDelYn('Y');
 	        img.setModDts(LocalDate.now());
 	        imgRepository.save(img);
 	    }

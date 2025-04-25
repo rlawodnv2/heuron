@@ -8,6 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,28 +51,28 @@ public class PatientController {
 	@Transactional
 	public String savePatient(@RequestParam(name = "patiNm") String patiNm,
 							  @RequestParam(name = "age") int age,
-							  @RequestParam(name = "genCd") Gender genCd,
-							  @RequestParam(name = "diseaseYn") YN diseaseYn,
+							  @RequestParam(name = "genCd") String genCd,
+							  @RequestParam(name = "diseaseYn") Character diseaseYn,
 							  @RequestParam(name = "files",required = false) MultipartFile[] files,
 							  Model model) throws IOException {
 
+		
+		TuserPatiBas patient = TuserPatiBas.builder()
+				.patiNm(patiNm)
+				.age(age)
+				.genCd(genCd)
+				.diseaseYn(diseaseYn)
+				.delYn('N')
+				.hpNo(null)
+				.regrNo("KIMJAEWOO")
+				.regPgmUrl("/patients/save")
+				.regDts(LocalDate.now())
+				.modrNo("KIMJAEWOO")
+				.modPgmUrl("/patients/save")
+				.modDts(LocalDate.now())
+				.build();
+		
 		try {
-			
-			TuserPatiBas patient = TuserPatiBas.builder()
-												.patiNm(patiNm)
-												.age(age)
-												.genCd(genCd)
-												.diseaseYn(diseaseYn)
-												.delYn(YN.N)
-												.hpNo(null)
-												.regrNo("KIMJAEWOO")
-												.regPgmUrl("/patients/save")
-												.regDts(LocalDate.now())
-												.modrNo("KIMJAEWOO")
-												.modPgmUrl("/patients/save")
-												.modDts(LocalDate.now())
-												.build();
-
 			patiRepository.save(patient);
 
 			if (files != null) {
@@ -93,7 +94,7 @@ public class PatientController {
 															.pati(patient)
 															.imgUrl(imageUrl)
 															.imgNm(originalFilename)
-															.delYn(YN.N)
+															.delYn('N')
 															.regrNo("KIMJAEWOO")
 															.regPgmUrl("/patients/save")
 															.regDts(LocalDate.now())
@@ -113,7 +114,7 @@ public class PatientController {
 			throw new RuntimeException("환자 및 이미지 저장시 오류 발생");
 		}
 		
-		return "patient";
+		return "redirect:/patients/"+patient.getPatiNo();
 	}
 	
 	/**
@@ -122,13 +123,19 @@ public class PatientController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/patient/{patiNo}")
+	@GetMapping("/patients/{patiNo}")
 	public String patientSearch(@PathVariable(name="patiNo") Integer patiNo, Model model) {
 		TuserPatiBas patient = patiRepository.findById(patiNo)
-			.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+				   								.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+
+/*		List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo)
+													.stream().filter(img -> YN.Y.equals(img.getDelYn())).collect(Collectors.toList());
+*/
+//		log.info("이미지 개수: {}", images.size());
 
 		model.addAttribute("patient", patient);
-		return "redirect:/patient/";
+//		model.addAttribute("images", images);
+		return "patient";
 	}
 	
 	/**
@@ -148,8 +155,8 @@ public class PatientController {
 	public String updatePatient(@PathVariable(name="patiNo") Integer patiNo,
 								@RequestParam(name="patiNm") String patiNm,
 								@RequestParam(name="age") int age,
-								@RequestParam(name="genCd") Gender genCd,
-								@RequestParam(name="diseaseYn") YN diseaseYn,
+								@RequestParam(name="genCd") String genCd,
+								@RequestParam(name="diseaseYn") Character diseaseYn,
 								@RequestParam(name="files",required = false) MultipartFile[] files,
 								Model model) throws IOException {
 
@@ -188,7 +195,7 @@ public class PatientController {
 															.pati(patient)
 															.imgUrl(imageUrl)
 															.imgNm(originalFilename)
-															.delYn(YN.N)
+															.delYn('N')
 															.regrNo("KIMJAEWOO")
 															.regPgmUrl("/patients/update")
 															.regDts(LocalDate.now())
@@ -216,50 +223,50 @@ public class PatientController {
 	 */
 	@PostMapping("/patients/delete/{patiNo}")
 	public String deletePatient(@PathVariable(name="patiNo") Integer patiNo) {
-	    TuserPatiBas patient = patiRepository.findById(patiNo)
-	        .orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+		TuserPatiBas patient = patiRepository.findById(patiNo)
+			.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
 
-	    patient.setDelYn(YN.Y);
-	    patient.setModDts(LocalDate.now());
-	    patiRepository.save(patient);
+		patient.setDelYn('Y');
+		patient.setModDts(LocalDate.now());
+		patiRepository.save(patient);
 
-	    // 연관 이미지도 삭제 처리
-	    /*
-	    List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo);
-	    for (TuserPatiImgInf img : images) {
-	        img.setDelYn("Y");
-	        img.setModDts(LocalDate.now());
-	        imgRepository.save(img);
-	    }
-	    */
-	    return "redirect:/patients/list";
+		// 연관 이미지도 삭제 처리
+		/*
+		List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo);
+		for (TuserPatiImgInf img : images) {
+			img.setDelYn("Y");
+			img.setModDts(LocalDate.now());
+			imgRepository.save(img);
+		}
+		*/
+		return "redirect:/patients/list";
 	}
 	
 	@GetMapping("/patients/list")
 	public String listPatients(@RequestParam(name="patiNm",required = false) String patiNm, Model model) {
-	    List<TuserPatiBas> patients;
+		List<TuserPatiBas> patients;
 
-	    if (patiNm != null && !patiNm.isEmpty()) {
-	        patients = patiRepository.findByPatiNmContainingAndDelYn(patiNm, YN.N);
-	    } else {
-	        patients = patiRepository.findByDelYn(YN.N);
-	    }
+		if (patiNm != null && !patiNm.isEmpty()) {
+			patients = patiRepository.findByPatiNmContainingAndDelYn(patiNm, 'N');
+		} else {
+			patients = patiRepository.findByDelYn('N');
+		}
 
-	    model.addAttribute("patients", patients);
-	    model.addAttribute("keyword", patiNm);
-	    return "patient-list";
+		model.addAttribute("patients", patients);
+		model.addAttribute("keyword", patiNm);
+		return "patient-list";
 	}
 	
 	@GetMapping("/patients/view/{patiNo}")
 	public String viewPatient(@PathVariable(name="patiNo") Integer patiNo, Model model) {
-	    TuserPatiBas patient = patiRepository.findById(patiNo)
-	        .orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+		TuserPatiBas patient = patiRepository.findById(patiNo)
+			.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
 
-	    List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo)
-	    											.stream().filter(img -> !"Y".equals(img.getDelYn())).toList();
+		List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo)
+													.stream().filter(img -> !YN.Y.equals(img.getDelYn())).toList();
 
-	    model.addAttribute("patient", patient);
-	    model.addAttribute("images", images);
-	    return "patient-view";
+		model.addAttribute("patient", patient);
+		model.addAttribute("images", images);
+		return "patient-view";
 	}
 }

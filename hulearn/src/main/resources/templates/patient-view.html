@@ -33,12 +33,18 @@
 	</form>
 	
 	<h3>이미지 목록</h3>
-	<div th:each="img : ${images}">
-		<form th:action="@{'/image/delete/'+${img.imgNo}+'/'+${patient.patiNo}}" method="post">
-			<p th:text="${img.imgNm}"></p>
-			<img th:src="${img.imgUrl}" alt="이미지" style="max-width: 300px;"/>
-			<button type="submit">이미지 삭제</button>
-		</form>
+	<div th:if="${images != null && !images.isEmpty()}">
+		<div th:each="img : ${images}">
+			<form th:action="@{'/image/delete/'+${img.imgNo}+'/'+${patient.patiNo}}" method="post">
+				<p th:text="${img.imgNm}"></p>
+				<img th:src="${img.imgUrl}" alt="이미지" style="max-width: 300px;"/>
+				<button type="submit">이미지 삭제</button>
+			</form>
+		</div>
+	</div>
+	<!-- 이미지가 없을 경우 안내 메시지 -->
+	<div th:if="${images == null || images.isEmpty()}">
+		<p>등록된 이미지가 없습니다.</p>
 	</div>
 
 	<form th:action="@{'/patients/delete/' + ${patient.patiNo}}" method="post" style="margin-top: 20px;">

@@ -97,7 +97,7 @@ public class ImageRestContoller {
 												.pati(patient)
 												.imgUrl(imageUrl)
 												.imgNm(originalFilename)
-												.delYn(YN.N)
+												.delYn('N')
 												.regrNo("KIMJAEWOO")
 												.regPgmUrl("/api/images/upload")
 												.regDts(LocalDate.now())

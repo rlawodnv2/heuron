@@ -40,7 +40,7 @@ public class PatientRestController {
 	 */
 	@GetMapping("/api/patient/{patiNo}/{delYn}")
 	public ResponseEntity<TuserPatiBas> findById(@PathVariable(name="patiNo") Integer patiNo
-													,@PathVariable(name="delYn") YN delYn) {
+													,@PathVariable(name="delYn") Character delYn) {
 		TuserPatiBas pati = patientService.getPatientById(patiNo, delYn);
 		
 		if (delYn == null) {

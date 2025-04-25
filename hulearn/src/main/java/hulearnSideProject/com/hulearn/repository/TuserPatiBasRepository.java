@@ -10,10 +10,10 @@ import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 
 public interface TuserPatiBasRepository extends JpaRepository<TuserPatiBas, Integer> {
 
-	List<TuserPatiBas> findByPatiNmContainingAndDelYn(String patiNm, YN delYn);
+	List<TuserPatiBas> findByPatiNmContainingAndDelYn(String patiNm, Character delYn);
 
-	List<TuserPatiBas> findByDelYn(YN delYn);
+	List<TuserPatiBas> findByDelYn(Character delYn);
 
-	Optional<TuserPatiBas> findByPatiNoAndDelYn(Integer patiNo, YN delYn);
+	Optional<TuserPatiBas> findByPatiNoAndDelYn(Integer patiNo, Character delYn);
 	
 }

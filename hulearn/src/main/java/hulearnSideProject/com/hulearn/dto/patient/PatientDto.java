@@ -21,9 +21,9 @@ public class PatientDto {
 	private Integer patiNo;
 	private String patiNm;
 	private Integer age;
-	private Gender genCd;
-	private YN diseaseYn;
-	private YN delYn;
+	private String genCd;
+	private Character diseaseYn;
+	private Character delYn;
 	private String hpNo;
 	private LocalDate regDts;
 	private LocalDate modDts;

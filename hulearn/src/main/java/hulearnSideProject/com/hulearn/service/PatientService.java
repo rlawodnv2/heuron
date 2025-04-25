@@ -26,7 +26,7 @@ public class PatientService {
 	}
 
 	// 단일 조회 삭제 조건 포함.
-	public TuserPatiBas getPatientById(Integer patiNo, YN delYn) {
+	public TuserPatiBas getPatientById(Integer patiNo, Character delYn) {
 		return patiRepository.findByPatiNoAndDelYn(patiNo, delYn).orElse(null);
 	}
 	// 단일 조회 삭제 조건 없음.

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,7 +45,7 @@ public class TuserPatiImgInf {
 	private String imgNm;
 
 	@Column(name = "DEL_YN", nullable = false)
-	private YN delYn;
+	private Character delYn;
 
 	@Column(name = "REGR_NO", nullable = false)
 	private String regrNo;

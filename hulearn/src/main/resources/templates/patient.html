@@ -9,16 +9,16 @@
 
 	<form th:action="@{/patients/save}" method="post" enctype="multipart/form-data">
 		<label>이름:</label>
-		<input type="text" name="patiNm" required/><br/><br/>
+		<input type="text" name="patiNm" required th:value="${patient.patiNm}"/><br/><br/>
 
 		<label>나이:</label>
-		<input type="number" name="age" required/><br/><br/>
+		<input type="number" name="age" required th:value="${patient.age}"/><br/><br/>
 
 		<label>성별 코드:</label>
-		<input type="text" name="genCd" required/><br/><br/>
+		<input type="text" name="genCd" required th:value="${patient.genCd}"/><br/><br/>
 
 		<label>질병 여부 (Y/N):</label>
-		<input type="text" name="diseaseYn" required/><br/><br/>
+		<input type="text" name="diseaseYn" required th:value="${patient.diseaseYn}"/><br/><br/>
 
 		<label>이미지 업로드 (여러 개):</label>
 		<input type="file" name="files" multiple/><br/><br/>

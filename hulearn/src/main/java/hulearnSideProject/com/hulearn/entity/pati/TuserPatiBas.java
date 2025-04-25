@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,28 +41,24 @@ public class TuserPatiBas {
 
 	@Column(name = "PATI_NM", nullable = false)
 	@NotNull(message = "환자 이름은 필수 값입니다.")
-	@Size(min = 1, message = "환자 이름은 비어있을 수 없습니다.")
 	private String patiNm;
 
 	@Column(name = "AGE", nullable = false)
 	@NotNull(message = "환자 나이는 필수 값입니다.")
-	@Size(max = 3, message = "환자 나이를 확인해 주세요.")
 	@Min(value = 0, message = "환자 나이는 0세 이상이어야 합니다.")
 	@Max(value = 999, message = "환자 나이는 999세 이하이어야 합니다.")
 	private Integer age;
 
-	@Enumerated(EnumType.STRING)
 	@Column(name = "GEN_CD", nullable = false)
 	@NotNull(message = "성별을 입력해주세요. M/F")
-	private Gender genCd;
+	private String genCd;
 
-	@Enumerated(EnumType.STRING)
 	@Column(name = "DISEASE_YN", nullable = false)
 	@NotNull(message = "질병 여부를 입력해주세요. Y/N")
-	private YN diseaseYn;
+	private Character diseaseYn;
 
 	@Column(name = "DEL_YN", nullable = false)
-	private YN delYn;
+	private Character delYn;
 
 	@Column(name = "HP_NO")
 	private String hpNo;
@@ -86,7 +81,7 @@ public class TuserPatiBas {
 	@Column(name = "MOD_DTS", nullable = false, columnDefinition = "DATE")
 	private LocalDate modDts;
 
-	@OneToMany(mappedBy = "pati", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pati", fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<TuserPatiImgInf> imageList;
 	
