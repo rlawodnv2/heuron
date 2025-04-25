@@ -29,7 +29,7 @@ public class ImageController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/api/images/upload/{patiNo}")
+	@GetMapping("/images/upload/{patiNo}")
 	public String uploadForm(@PathVariable(name="patiNo") Integer patiNo, Model model) {
 		model.addAttribute("patiNo", patiNo);
 		return "upload";
