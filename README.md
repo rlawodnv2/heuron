@@ -36,3 +36,44 @@ util|---|handler와 config 포함
 util.config|WebConfig.java|파일 경로 맵핑|
 util.handler|GlobalExceptionHandler.java|Exception 처리 Handler|
 
+처음으로 설명드릴 뷰 페이지 URL
+설명({PathVariable}    @{requestParamter})
+
+@Controller
+ImageController
+/images/upload/{patiNo} -> 이미지 업로드 화면
+/image/delete/{imgNo}/{patiNo} -> 이미지 삭제
+
+@RestController
+ImageRestController
+/api/images/{patiNo} | @{delYn} type enum YN -> 이미지 삭제 delYn 값이 null 일 경우 전체 조회 Y 및 N일 경우 조회처리
+/api/images/upload/{patiNo} | @{file} type MultipartFile -> 이미지 업로드
+
+@Controller
+PatientController
+/patient -> 환자 등록 html
+/patients/save | @{patiNm} type String 
+                 @{age} type int
+                 @{genCd} type enum Gender
+                 @{diseaseYn} type enum YN
+                 @{files} type MultipartFile -> 환자 정보 및 환자 이미지 저장
+/patient/{patiNo} | @{patiNo} type int -> 환자 정보 화면(조회)
+/patients/update/{patiNo} | @{patiNm} type String 
+                            @{age} type int
+                            @{genCd} type enum Gender
+                            @{diseaseYn} type enum YN
+                            @{files} type MultipartFile -> 환자 이미지 및 정보 수정
+/patients/delete/{patiNo} -> 환자 정보 삭제
+/patients/list  | @{patiNm} type String -> 환자 검색
+/patients/view/{patiNo} -> 환자 상세
+
+@RestController
+/api/patients/save @{TuserPatiBas} Type Entity -> 저장
+/api/patients/findAll -> 전체검색
+/api/patient/{patiNo} | @{delYn} -> 회원 조회 delYn 이 null일경우 전체조회
+/api/patient/{patiNo} -> 회원삭제
+/api/patient/update/{patiNo} -> 회원정보 수정
+
+
+문제 사항:
+enum을 적용할 시 index 오류가 발생하고 있음.
