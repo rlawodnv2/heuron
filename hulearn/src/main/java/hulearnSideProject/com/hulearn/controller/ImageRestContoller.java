@@ -43,9 +43,9 @@ public class ImageRestContoller {
 	 * @param patiNo
 	 * @return
 	 */
-	@GetMapping("/api/images/{patiNo}/{delYn}")
+	@GetMapping("/api/images/{patiNo}")
 	public ResponseEntity<List<ImageDto>> getImagesByPatientDelYN(@PathVariable(name="patiNo") Integer patiNo
-																,@PathVariable(name="delYn") Character delYn) {
+																,@RequestParam(name="delYn") YN delYn) {
 		TuserPatiBas patient = patiRepository.findById(patiNo)
 												.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
 		

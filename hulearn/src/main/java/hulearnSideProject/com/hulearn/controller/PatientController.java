@@ -57,7 +57,6 @@ public class PatientController {
 
 		try {
 			
-			// 1. 환자 저장
 			TuserPatiBas patient = TuserPatiBas.builder()
 												.patiNm(patiNm)
 												.age(age)
@@ -75,7 +74,6 @@ public class PatientController {
 
 			patiRepository.save(patient);
 
-			// 2. 이미지 저장
 			if (files != null) {
 				File dir = new File(uploadDir);
 				if (!dir.exists()) dir.mkdirs();

@@ -7,7 +7,7 @@
 <body>
 	<h1>이미지 업로드 테스트</h1>
 
-	<form method="post" enctype="multipart/form-data" th:action="@{'/images/upload/' + ${patiNo}}">
+	<form method="post" enctype="multipart/form-data" th:action="@{'/api/images/upload/' + ${patiNo}}">
 		<label>환자 번호:</label>
 		<input type="text" name="patiNo" th:value="${patiNo}" readonly/><br/><br/>
 
