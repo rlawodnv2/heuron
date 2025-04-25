@@ -3,6 +3,7 @@ package hulearnSideProject.com.hulearn.dto.patient;
 import java.time.LocalDate;
 import java.util.List;
 
+import hulearnSideProject.com.hulearn.dto.image.ImageDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

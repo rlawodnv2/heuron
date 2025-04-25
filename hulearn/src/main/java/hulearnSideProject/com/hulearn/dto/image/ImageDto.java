@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.dto.patient;
+package hulearnSideProject.com.hulearn.dto.image;
 
 import java.time.LocalDate;
 
