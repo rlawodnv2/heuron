@@ -2,7 +2,9 @@
 간단한 게시판과 API 호출을 위한 기능을 구현한 프로젝트입니다.
 
 DB: MySQL
+
 Back-End: Spring Boot, Java 17, JPA
+
 Front-End: Thymeleaf
 
 
