@@ -14,6 +14,6 @@ public interface TuserPatiBasRepository extends JpaRepository<TuserPatiBas, Inte
 
 	List<TuserPatiBas> findByDelYn(Character delYn);
 
-	Optional<TuserPatiBas> findByPatiNoAndDelYn(Integer patiNo, Character delYn);
+	Optional<TuserPatiBas> findByPatiNoAndDelYn(long patiNo, Character delYn);
 	
 }

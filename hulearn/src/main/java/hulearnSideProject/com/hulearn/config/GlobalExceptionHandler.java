@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.util.handler;
+package hulearnSideProject.com.hulearn.config;
 
 import java.util.HashMap;
 import java.util.Map;

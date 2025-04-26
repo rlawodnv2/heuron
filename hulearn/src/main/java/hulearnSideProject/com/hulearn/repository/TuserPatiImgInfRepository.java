@@ -9,6 +9,6 @@ import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 
 public interface TuserPatiImgInfRepository extends JpaRepository<TuserPatiImgInf, Integer> {
 
-	List<TuserPatiImgInf> findByPati_PatiNo(Integer patiNo);
+	List<TuserPatiImgInf> findByPati_PatiNo(long patiNo);
 	
 }

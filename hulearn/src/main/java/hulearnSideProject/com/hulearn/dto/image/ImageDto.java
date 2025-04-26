@@ -14,8 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ImageDto {
-	private Integer patrNo;
-    private Integer imgNo;
+	private long patrNo;
+    private long imgNo;
     private String imgUrl;
     private String imgNm;
     private Character delYn;

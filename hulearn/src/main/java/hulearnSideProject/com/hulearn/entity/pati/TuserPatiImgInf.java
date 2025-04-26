@@ -31,7 +31,7 @@ public class TuserPatiImgInf {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "IMG_NO")
-	private Integer imgNo;
+	private long imgNo;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PATI_NO", nullable = false)

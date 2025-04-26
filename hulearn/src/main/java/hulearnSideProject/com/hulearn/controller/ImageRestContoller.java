@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import hulearnSideProject.com.hulearn.config.FileSave;
 import hulearnSideProject.com.hulearn.dto.image.ImageDto;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
@@ -26,16 +27,17 @@ import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 import hulearnSideProject.com.hulearn.mapper.PatientMapper;
 import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
 import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
+import hulearnSideProject.com.hulearn.service.ImageService;
+import hulearnSideProject.com.hulearn.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class ImageRestContoller {
 
-	private final TuserPatiImgInfRepository imgRepository;
-	private final TuserPatiBasRepository patiRepository;
-	
-	private final String uploadDir = "C:/uploads";
+	private final PatientService patientService;
+	private final ImageService imageService;
+
 	
 	/**
 	 * @content 전체이미지조회 삭제조건으로 조회
@@ -44,17 +46,16 @@ public class ImageRestContoller {
 	 * @return
 	 */
 	@GetMapping("/api/images/{patiNo}")
-	public ResponseEntity<List<ImageDto>> getImagesByPatientDelYN(@PathVariable(name="patiNo") Integer patiNo
-																,@RequestParam(name="delYn") YN delYn) {
-		TuserPatiBas patient = patiRepository.findById(patiNo)
-												.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+	public ResponseEntity<List<ImageDto>> getImagesByPatientDelYN(@PathVariable(name="patiNo") long patiNo
+																,@RequestParam(name="delYn") Character delYn) {
+		TuserPatiBas patient = patientService.findById(patiNo);
 		
 		Stream<ImageDto> imageStream = patient.getImageList()
 												.stream()
 												.map(PatientMapper::toDto);
 
 		if (delYn != null) {
-			imageStream = imageStream.filter(image -> delYn.equals(image.getDelYn()));
+			imageStream = imageStream.filter(image -> delYn == image.getDelYn());
 		}
 
 		List<ImageDto> result = imageStream.toList();
@@ -70,11 +71,10 @@ public class ImageRestContoller {
 	 * @throws IOException
 	 */
 	@PostMapping("/api/images/upload/{patiNo}")
-	public ResponseEntity<?> uploadImage(@PathVariable(name="patiNo") Integer patiNo,
+	public ResponseEntity<?> uploadImage(@PathVariable(name="patiNo") long patiNo,
 										 @RequestParam("file") MultipartFile file) throws IOException {
 
-		TuserPatiBas patient = patiRepository.findById(patiNo)
-												.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+		TuserPatiBas patient = patientService.findById(patiNo);
 
 		if (file.isEmpty()) {
 			throw new RuntimeException("파일이 없습니다");
@@ -85,28 +85,7 @@ public class ImageRestContoller {
 			dir.mkdirs();
 		}
 
-		String originalFilename = file.getOriginalFilename();
-		String newFileName = UUID.randomUUID() + "_" + originalFilename;
-		String filePath = uploadDir + File.separator + newFileName;
-
-		Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-		String imageUrl = "http://localhost:8080/uploads/" + newFileName;
-
-		TuserPatiImgInf image = TuserPatiImgInf.builder()
-												.pati(patient)
-												.imgUrl(imageUrl)
-												.imgNm(originalFilename)
-												.delYn('N')
-												.regrNo("KIMJAEWOO")
-												.regPgmUrl("/api/images/upload")
-												.regDts(LocalDate.now())
-												.modrNo("KIMJAEWOO")
-												.modPgmUrl("/api/images/upload")
-												.modDts(LocalDate.now())
-												.build();
-
-		imgRepository.save(image);
+		FileSave.save(file, patient);
 
 		return ResponseEntity.ok(Map.of(
 			"message", "업로드 성공",

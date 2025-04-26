@@ -39,7 +39,7 @@ public class PatientRestController {
 	 * @return
 	 */
 	@GetMapping("/api/patient/{patiNo}")
-	public ResponseEntity<TuserPatiBas> findById(@PathVariable(name="patiNo") Integer patiNo
+	public ResponseEntity<TuserPatiBas> findById(@PathVariable(name="patiNo") long patiNo
 													,@RequestParam(name="delYn") Character delYn) {
 		TuserPatiBas pati = patientService.getPatientById(patiNo, delYn);
 		
@@ -58,7 +58,7 @@ public class PatientRestController {
 	 * @return
 	 */
 	@DeleteMapping("/api/patient/{patiNo}")
-	public ResponseEntity<Void> delete(@PathVariable(name="patiNo") Integer patiNo) {
+	public ResponseEntity<Void> delete(@PathVariable(name="patiNo") long patiNo) {
 		
 		patientService.deletePatient(patiNo);
 		
@@ -66,7 +66,7 @@ public class PatientRestController {
 	}
 	
 	@PostMapping("/api/patient/update/{patiNo}")
-	public ResponseEntity<TuserPatiBas> update(@PathVariable("patiNo") Integer patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
+	public ResponseEntity<TuserPatiBas> update(@PathVariable("patiNo") long patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
 		LocalDate nowDate = LocalDate.now();
 
 		TuserPatiBas patient = patientService.getPatientById(patiNo);

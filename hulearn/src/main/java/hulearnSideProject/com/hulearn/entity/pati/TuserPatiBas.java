@@ -37,7 +37,7 @@ public class TuserPatiBas {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "PATI_NO")
-	private Integer patiNo;
+	private long patiNo;
 
 	@Column(name = "PATI_NM", nullable = false)
 	@NotNull(message = "환자 이름은 필수 값입니다.")

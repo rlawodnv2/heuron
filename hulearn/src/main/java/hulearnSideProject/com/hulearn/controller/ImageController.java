@@ -14,14 +14,16 @@ import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
 import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
+import hulearnSideProject.com.hulearn.service.ImageService;
+import hulearnSideProject.com.hulearn.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class ImageController {
 
-	private final TuserPatiImgInfRepository imgRepository;
-	private final TuserPatiBasRepository patiRepository;
+	private final PatientService patientService;
+	private final ImageService imageService;
 
 	/**
 	 * @content 이미지 업로드 화면
@@ -30,26 +32,25 @@ public class ImageController {
 	 * @return
 	 */
 	@GetMapping("/images/upload/{patiNo}")
-	public String uploadForm(@PathVariable(name="patiNo") Integer patiNo, Model model) {
+	public String uploadForm(@PathVariable(name="patiNo") long patiNo, Model model) {
 		model.addAttribute("patiNo", patiNo);
 		return "upload";
 	}
 	
 	@PostMapping("/image/delete/{imgNo}/{patiNo}")
-	public String deleteImage(@PathVariable(name="imgNo") Integer imgNo
-							, @PathVariable(name="patiNo") Integer patiNo) {
-	    TuserPatiBas patient = patiRepository.findById(patiNo)
-	    										.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+	public String deleteImage(@PathVariable(name="imgNo") long imgNo
+							, @PathVariable(name="patiNo") long patiNo) {
 
 	    // 연관 이미지 삭제 처리
-	    List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo);
+	    List<TuserPatiImgInf> images = imageService.findByPati_PatiNo(patiNo);
+
 	    for (TuserPatiImgInf img : images) {
 	    	if(img.getImgNo() != imgNo) {
 	    		continue;
 	    	}
 	        img.setDelYn('Y');
 	        img.setModDts(LocalDate.now());
-	        imgRepository.save(img);
+	        imageService.save(img);
 	    }
 
 	    return "redirect:/patients/view/" + patiNo;

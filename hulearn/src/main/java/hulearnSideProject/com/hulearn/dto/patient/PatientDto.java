@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class PatientDto {
-	private Integer patiNo;
+	private long patiNo;
 	private String patiNm;
 	private Integer age;
 	private String genCd;

@@ -21,12 +21,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import hulearnSideProject.com.hulearn.config.FileSave;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.Gender;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
 import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
+import hulearnSideProject.com.hulearn.service.ImageService;
+import hulearnSideProject.com.hulearn.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -35,11 +38,9 @@ public class PatientController {
 
 	private static final Logger log = LoggerFactory.getLogger(PatientController.class);
 	
-	private final TuserPatiImgInfRepository imgRepository;
+	private final PatientService patientSerivce;
 	
-	private final TuserPatiBasRepository patiRepository;
-
-	private final String uploadDir = "C:/uploads";
+	private final ImageService imageService;
 	
 	@GetMapping("/patient")
 	public String newPatientForm() {
@@ -58,54 +59,25 @@ public class PatientController {
 
 		
 		TuserPatiBas patient = TuserPatiBas.builder()
-				.patiNm(patiNm)
-				.age(age)
-				.genCd(genCd)
-				.diseaseYn(diseaseYn)
-				.delYn('N')
-				.hpNo(null)
-				.regrNo("KIMJAEWOO")
-				.regPgmUrl("/patients/save")
-				.regDts(LocalDate.now())
-				.modrNo("KIMJAEWOO")
-				.modPgmUrl("/patients/save")
-				.modDts(LocalDate.now())
-				.build();
+											.patiNm(patiNm)
+											.age(age)
+											.genCd(genCd)
+											.diseaseYn(diseaseYn)
+											.delYn('N')
+											.hpNo(null)
+											.regrNo("KIMJAEWOO")
+											.regPgmUrl("/patients/save")
+											.regDts(LocalDate.now())
+											.modrNo("KIMJAEWOO")
+											.modPgmUrl("/patients/save")
+											.modDts(LocalDate.now())
+											.build();
 		
 		try {
-			patiRepository.save(patient);
+			
+			patientSerivce.save(patient);
 
-			if (files != null) {
-				File dir = new File(uploadDir);
-				if (!dir.exists()) dir.mkdirs();
-
-				for (MultipartFile file : files) {
-					if (file.isEmpty()) continue;
-
-					String originalFilename = file.getOriginalFilename();
-					String newFileName = UUID.randomUUID() + "_" + originalFilename;
-					String filePath = uploadDir + File.separator + newFileName;
-
-					Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-					String imageUrl = "http://localhost:8080/uploads/" + newFileName;
-
-					TuserPatiImgInf image = TuserPatiImgInf.builder()
-															.pati(patient)
-															.imgUrl(imageUrl)
-															.imgNm(originalFilename)
-															.delYn('N')
-															.regrNo("KIMJAEWOO")
-															.regPgmUrl("/patients/save")
-															.regDts(LocalDate.now())
-															.modrNo("KIMJAEWOO")
-															.modPgmUrl("/patients/save")
-															.modDts(LocalDate.now())
-															.build();
-
-					imgRepository.save(image);
-				}
-			}
+			FileSave.save(files, patient);
 
 			model.addAttribute("message", "환자 및 이미지 저장 완료!");
 			
@@ -124,9 +96,8 @@ public class PatientController {
 	 * @return
 	 */
 	@GetMapping("/patients/{patiNo}")
-	public String patientSearch(@PathVariable(name="patiNo") Integer patiNo, Model model) {
-		TuserPatiBas patient = patiRepository.findById(patiNo)
-				   								.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+	public String patientSearch(@PathVariable(name="patiNo") long patiNo, Model model) {
+		TuserPatiBas patient = patientSerivce.findById(patiNo);
 
 /*		List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo)
 													.stream().filter(img -> YN.Y.equals(img.getDelYn())).collect(Collectors.toList());
@@ -152,7 +123,7 @@ public class PatientController {
 	 */
 	@PostMapping("/patients/update/{patiNo}")
 	@Transactional
-	public String updatePatient(@PathVariable(name="patiNo") Integer patiNo,
+	public String updatePatient(@PathVariable(name="patiNo") long patiNo,
 								@RequestParam(name="patiNm") String patiNm,
 								@RequestParam(name="age") int age,
 								@RequestParam(name="genCd") String genCd,
@@ -162,8 +133,7 @@ public class PatientController {
 
 		
 		try {
-			TuserPatiBas patient = patiRepository.findById(patiNo)
-					.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+			TuserPatiBas patient = patientSerivce.findById(patiNo);
 
 			patient.setPatiNm(patiNm);
 			patient.setAge(age);
@@ -173,40 +143,10 @@ public class PatientController {
 			patient.setModrNo("KIMJAEWOO");
 			patient.setModPgmUrl("/patients/update");
 
-			patiRepository.save(patient);
+			patientSerivce.save(patient);
 			
-			// 새 이미지 저장 (기존 이미지 유지)
-			if (files != null) {
-				File dir = new File(uploadDir);
-				if (!dir.exists()) dir.mkdirs();
-
-				for (MultipartFile file : files) {
-					if (file.isEmpty()) continue;
-
-					String originalFilename = file.getOriginalFilename();
-					String newFileName = UUID.randomUUID() + "_" + originalFilename;
-					String filePath = uploadDir + File.separator + newFileName;
-
-					Files.copy(file.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-					String imageUrl = "http://localhost:8080/uploads/" + newFileName;
-
-					TuserPatiImgInf image = TuserPatiImgInf.builder()
-															.pati(patient)
-															.imgUrl(imageUrl)
-															.imgNm(originalFilename)
-															.delYn('N')
-															.regrNo("KIMJAEWOO")
-															.regPgmUrl("/patients/update")
-															.regDts(LocalDate.now())
-															.modrNo("KIMJAEWOO")
-															.modPgmUrl("/patients/update")
-															.modDts(LocalDate.now())
-															.build();
-
-					imgRepository.save(image);
-				}
-			}
+			FileSave.save(files, patient);
+			
 		} catch(RuntimeException e) {
 			log.error("환자정보 수정오류 :: {}",e);
 			throw new RuntimeException("환자정보 수정 오류");
@@ -222,13 +162,12 @@ public class PatientController {
 	 * @return
 	 */
 	@PostMapping("/patients/delete/{patiNo}")
-	public String deletePatient(@PathVariable(name="patiNo") Integer patiNo) {
-		TuserPatiBas patient = patiRepository.findById(patiNo)
-			.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+	public String deletePatient(@PathVariable(name="patiNo") long patiNo) {
+		TuserPatiBas patient = patientSerivce.findById(patiNo);
 
 		patient.setDelYn('Y');
 		patient.setModDts(LocalDate.now());
-		patiRepository.save(patient);
+		patientSerivce.save(patient);
 
 		// 연관 이미지도 삭제 처리
 		/*
@@ -244,26 +183,20 @@ public class PatientController {
 	
 	@GetMapping("/patients/list")
 	public String listPatients(@RequestParam(name="patiNm",required = false) String patiNm, Model model) {
-		List<TuserPatiBas> patients;
-
-		if (patiNm != null && !patiNm.isEmpty()) {
-			patients = patiRepository.findByPatiNmContainingAndDelYn(patiNm, 'N');
-		} else {
-			patients = patiRepository.findByDelYn('N');
-		}
-
+		
+		List<TuserPatiBas> patients = patientSerivce.findByDelYn(patiNm);
+		
 		model.addAttribute("patients", patients);
 		model.addAttribute("keyword", patiNm);
 		return "patient-list";
 	}
 	
 	@GetMapping("/patients/view/{patiNo}")
-	public String viewPatient(@PathVariable(name="patiNo") Integer patiNo, Model model) {
-		TuserPatiBas patient = patiRepository.findById(patiNo)
-			.orElseThrow(() -> new RuntimeException("조회된 환자가 없음."));
+	public String viewPatient(@PathVariable(name="patiNo") long patiNo, Model model) {
+		
+		TuserPatiBas patient = patientSerivce.findById(patiNo);
 
-		List<TuserPatiImgInf> images = imgRepository.findByPati_PatiNo(patiNo)
-													.stream().filter(img -> !YN.Y.equals(img.getDelYn())).toList();
+		List<TuserPatiImgInf> images = imageService.findByPati_PatiNo(patiNo);
 
 		model.addAttribute("patient", patient);
 		model.addAttribute("images", images);
