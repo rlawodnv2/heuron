@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import hulearnSideProject.com.hulearn.config.FileSave;
+import hulearnSideProject.com.hulearn.config.FileSaveUtil;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.Gender;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
@@ -77,7 +77,7 @@ public class PatientController {
 			
 			patientSerivce.save(patient);
 
-			FileSave.save(files, patient);
+			FileSaveUtil.save(files, patient);
 
 			model.addAttribute("message", "환자 및 이미지 저장 완료!");
 			
@@ -145,7 +145,7 @@ public class PatientController {
 
 			patientSerivce.save(patient);
 			
-			FileSave.save(files, patient);
+			FileSaveUtil.save(files, patient);
 			
 		} catch(RuntimeException e) {
 			log.error("환자정보 수정오류 :: {}",e);

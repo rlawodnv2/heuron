@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import hulearnSideProject.com.hulearn.config.FileSave;
+import hulearnSideProject.com.hulearn.config.FileSaveUtil;
 import hulearnSideProject.com.hulearn.dto.image.ImageDto;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
@@ -76,16 +76,11 @@ public class ImageRestContoller {
 
 		TuserPatiBas patient = patientService.findById(patiNo);
 
-		if (file.isEmpty()) {
-			throw new RuntimeException("파일이 없습니다");
+		try {
+			FileSaveUtil.save(file, patient);			
+		} catch(Exception e) {
+			return ResponseEntity.status(500).body(e.getMessage());
 		}
-
-		File dir = new File(uploadDir);
-		if (!dir.exists()) {
-			dir.mkdirs();
-		}
-
-		FileSave.save(file, patient);
 
 		return ResponseEntity.ok(Map.of(
 			"message", "업로드 성공",

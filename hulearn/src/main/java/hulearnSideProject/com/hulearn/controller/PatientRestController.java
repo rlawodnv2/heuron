@@ -69,6 +69,8 @@ public class PatientRestController {
 	public ResponseEntity<TuserPatiBas> update(@PathVariable("patiNo") long patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
 		LocalDate nowDate = LocalDate.now();
 
+		TuserPatiBas savedPatient = new TuserPatiBas();
+		
 		TuserPatiBas patient = patientService.getPatientById(patiNo);
 		
 		if (patient == null) {
@@ -99,7 +101,11 @@ public class PatientRestController {
 			patient.setDelYn(updatedPatient.getDelYn());
 		}
 
-		TuserPatiBas savedPatient = patientService.savePatient(patient);
+		try {
+			savedPatient = patientService.savePatient(patient);
+		} catch(Exception e) {
+			return ResponseEntity.status(500).body(e.getMessage());
+		}
 
 		return ResponseEntity.ok(savedPatient);
 	}
