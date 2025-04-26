@@ -35,9 +35,9 @@ repository|TuserPatiImgInfRepository.java|환자 이미지 JPA CURD Repository �
 service|---|비즈니스 로직 및 Repository와 Controller 연결|
 service|PatientService.java|환자 저장 조회 삭제 조건, 삭제 처리|
 ---|---|---|
-util|---|handler와 config 포함
-util.config|WebConfig.java|파일 경로 맵핑|
-util.handler|GlobalExceptionHandler.java|Exception 처리 Handler|
+config|---|handler와 config 포함
+config|WebConfig.java|파일 경로 맵핑|
+config|GlobalExceptionHandler.java|Exception 처리 Handler|
 
 처음으로 설명드릴 뷰 페이지 URL
 
