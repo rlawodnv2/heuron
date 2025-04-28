@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import heuron.com.dto.ErrorResponse;
 import heuron.com.entity.pati.TuserPatiBas;
-import heuron.com.hulearn.dto.ErrorResponse;
 import heuron.com.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

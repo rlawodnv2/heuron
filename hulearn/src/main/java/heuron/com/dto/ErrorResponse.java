@@ -1,4 +1,4 @@
-package heuron.com.hulearn.dto;
+package heuron.com.dto;
 
 import lombok.Getter;
 import lombok.Setter;

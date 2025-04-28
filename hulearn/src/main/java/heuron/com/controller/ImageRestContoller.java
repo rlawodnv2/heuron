@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import heuron.com.config.FileSaveUtil;
+import heuron.com.dto.ErrorResponse;
 import heuron.com.dto.image.ImageDto;
 import heuron.com.entity.pati.TuserPatiBas;
 import heuron.com.entity.pati.TuserPatiImgInf;
-import heuron.com.hulearn.dto.ErrorResponse;
 import heuron.com.mapper.PatientMapper;
 import heuron.com.service.ImageService;
 import heuron.com.service.PatientService;
