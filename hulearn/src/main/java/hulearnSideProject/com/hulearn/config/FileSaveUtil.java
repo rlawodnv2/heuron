@@ -1,6 +1,5 @@
 package hulearnSideProject.com.hulearn.config;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,21 +8,21 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 import hulearnSideProject.com.hulearn.service.ImageService;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
 public class FileSaveUtil {
 
-	private final ImageService imageService;
+	private final static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
 
-	private final String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
-
-	private boolean isAllowedFileType(MultipartFile file) {
+	private static boolean isAllowedFileType(MultipartFile file) {
 		String contentType = file.getContentType();
 		return contentType != null && (
 				contentType.equals("image/jpeg") ||
@@ -32,7 +31,7 @@ public class FileSaveUtil {
 		);
 	}
 
-	public void save(MultipartFile file, TuserPatiBas patient) {
+	public static String saveFile(MultipartFile file) {
 		if (file.isEmpty()) {
 			throw new IllegalArgumentException("빈 파일은 저장할 수 없습니다.");
 		}
@@ -63,31 +62,7 @@ public class FileSaveUtil {
 			throw new RuntimeException("파일 저장 실패: " + newFileName, e);
 		}
 
-		String imageUrl = "/uploads/" + newFileName;
-
-		TuserPatiImgInf image = TuserPatiImgInf.builder()
-				.pati(patient)
-				.imgUrl(imageUrl)
-				.imgNm(originalFilename)
-				.delYn('N')
-				.regrNo("KIMJAEWOO")
-				.regPgmUrl("/api/images/upload")
-				.regDts(LocalDate.now())
-				.modrNo("KIMJAEWOO")
-				.modPgmUrl("/api/images/upload")
-				.modDts(LocalDate.now())
-				.build();
-
-		imageService.save(image);
-	}
-
-	public void save(MultipartFile[] files, TuserPatiBas patient) {
-		if (files != null) {
-			for (MultipartFile file : files) {
-				if (!file.isEmpty()) {
-					save(file, patient);
-				}
-			}
-		}
+		// 저장된 파일의 URL 리턴
+		return "/uploads/" + newFileName;
 	}
 }

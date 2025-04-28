@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import hulearnSideProject.com.hulearn.dto.ErrorResponse;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.service.PatientService;
 import jakarta.validation.Valid;
@@ -66,7 +67,7 @@ public class PatientRestController {
 	}
 	
 	@PostMapping("/api/patient/update/{patiNo}")
-	public ResponseEntity<TuserPatiBas> update(@PathVariable("patiNo") long patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
+	public ResponseEntity<?> update(@PathVariable("patiNo") long patiNo, @Valid @RequestBody TuserPatiBas updatedPatient){
 		LocalDate nowDate = LocalDate.now();
 
 		TuserPatiBas savedPatient = new TuserPatiBas();
@@ -104,7 +105,8 @@ public class PatientRestController {
 		try {
 			savedPatient = patientService.savePatient(patient);
 		} catch(Exception e) {
-			return ResponseEntity.status(500).body(e.getMessage());
+			ErrorResponse error = new ErrorResponse(e.getMessage(), 500);
+			return ResponseEntity.status(500).body(error);
 		}
 
 		return ResponseEntity.ok(savedPatient);

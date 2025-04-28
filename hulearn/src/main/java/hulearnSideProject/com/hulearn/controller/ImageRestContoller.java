@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import hulearnSideProject.com.hulearn.config.FileSaveUtil;
+import hulearnSideProject.com.hulearn.dto.ErrorResponse;
 import hulearnSideProject.com.hulearn.dto.image.ImageDto;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
@@ -75,16 +76,32 @@ public class ImageRestContoller {
 										 @RequestParam("file") MultipartFile file) throws IOException {
 
 		TuserPatiBas patient = patientService.findById(patiNo);
-
+		TuserPatiImgInf image = new TuserPatiImgInf();
 		try {
-			FileSaveUtil.save(file, patient);			
+			String savedImageUrl = FileSaveUtil.saveFile(file);
+
+			image = TuserPatiImgInf.builder()
+													.pati(patient)
+													.imgUrl(savedImageUrl)
+													.imgNm(file.getOriginalFilename())
+													.delYn('N')
+													.regrNo("KIMJAEWOO")
+													.regPgmUrl("/api/images/upload")
+													.regDts(LocalDate.now())
+													.modrNo("KIMJAEWOO")
+													.modPgmUrl("/api/images/upload")
+													.modDts(LocalDate.now())
+													.build();
+
+			imageService.save(image);
 		} catch(Exception e) {
-			return ResponseEntity.status(500).body(e.getMessage());
+			ErrorResponse error = new ErrorResponse(e.getMessage(), 500);
+			return ResponseEntity.status(500).body(error);
 		}
 
 		return ResponseEntity.ok(Map.of(
 			"message", "업로드 성공",
-			"imageUrl", imageUrl
+			"imageUrl", image.getImgUrl()
 		));
 	}
 }

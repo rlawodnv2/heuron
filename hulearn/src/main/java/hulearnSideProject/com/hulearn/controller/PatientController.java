@@ -77,7 +77,24 @@ public class PatientController {
 			
 			patientSerivce.save(patient);
 
-			FileSaveUtil.save(files, patient);
+			for(MultipartFile file : files) {
+				String savedImageUrl = FileSaveUtil.saveFile(file);
+
+				TuserPatiImgInf image = TuserPatiImgInf.builder()
+														.pati(patient)
+														.imgUrl(savedImageUrl)
+														.imgNm(file.getOriginalFilename())
+														.delYn('N')
+														.regrNo("KIMJAEWOO")
+														.regPgmUrl("/api/images/upload")
+														.regDts(LocalDate.now())
+														.modrNo("KIMJAEWOO")
+														.modPgmUrl("/api/images/upload")
+														.modDts(LocalDate.now())
+														.build();
+
+				imageService.save(image);
+			}
 
 			model.addAttribute("message", "환자 및 이미지 저장 완료!");
 			
@@ -145,7 +162,24 @@ public class PatientController {
 
 			patientSerivce.save(patient);
 			
-			FileSaveUtil.save(files, patient);
+			for(MultipartFile file : files) {
+				String savedImageUrl = FileSaveUtil.saveFile(file);
+
+				TuserPatiImgInf image = TuserPatiImgInf.builder()
+														.pati(patient)
+														.imgUrl(savedImageUrl)
+														.imgNm(file.getOriginalFilename())
+														.delYn('N')
+														.regrNo("KIMJAEWOO")
+														.regPgmUrl("/api/images/upload")
+														.regDts(LocalDate.now())
+														.modrNo("KIMJAEWOO")
+														.modPgmUrl("/api/images/upload")
+														.modDts(LocalDate.now())
+														.build();
+
+				imageService.save(image);
+			}
 			
 		} catch(RuntimeException e) {
 			log.error("환자정보 수정오류 :: {}",e);

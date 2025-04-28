@@ -31,20 +31,12 @@ public class PatientService {
 		
 		TuserPatiBas patient = patiRepository.findByPatiNoAndDelYn(patiNo, delYn).orElse(null);
 		
-		if (patient == null) {
-		    return ResponseEntity.notFound().build();
-		}
-		
 		return patient;
 	}
 	// 단일 조회 삭제 조건 없음.
 	public TuserPatiBas getPatientById(long id) {
 		
-		TuserPatiBas patient = patiRepository.findById(id).orElse(null);
-		
-		if (patient == null) {
-		    return ResponseEntity.notFound().build();
-		}
+		TuserPatiBas patient = patiRepository.findById(id);
 		
 		return patient;
 	}
@@ -70,8 +62,7 @@ public class PatientService {
 	}
 
 	public TuserPatiBas findById(long patiNo) {
-		TuserPatiBas patient = patiRepository.findById(patiNo)
-												.orElseThrow(() -> new PathNotFoundException("조회된 환자가 없음."));
+		TuserPatiBas patient = patiRepository.findById(patiNo);
 		
 		return patient;
 	}
