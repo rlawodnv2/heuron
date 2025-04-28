@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
 import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
 import lombok.RequiredArgsConstructor;

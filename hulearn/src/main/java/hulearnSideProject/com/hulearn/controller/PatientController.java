@@ -1,14 +1,8 @@
 package hulearnSideProject.com.hulearn.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import hulearnSideProject.com.hulearn.config.FileSaveUtil;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.Gender;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
-import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
-import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
 import hulearnSideProject.com.hulearn.service.ImageService;
 import hulearnSideProject.com.hulearn.service.PatientService;
 import lombok.RequiredArgsConstructor;

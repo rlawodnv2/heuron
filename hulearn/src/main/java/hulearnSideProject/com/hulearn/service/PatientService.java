@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
 import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;

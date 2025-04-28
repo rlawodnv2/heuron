@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import hulearnSideProject.com.hulearn.dto.image.ImageDto;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.Gender;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

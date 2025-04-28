@@ -9,20 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
 import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
-import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
-import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
 import hulearnSideProject.com.hulearn.service.ImageService;
-import hulearnSideProject.com.hulearn.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class ImageController {
 
-	private final PatientService patientService;
 	private final ImageService imageService;
 
 	/**
