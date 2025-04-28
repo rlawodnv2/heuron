@@ -1,14 +1,9 @@
-package hulearnSideProject.com.hulearn.controller;
+package heuron.com.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.springframework.http.ResponseEntity;
@@ -19,17 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import hulearnSideProject.com.hulearn.config.FileSaveUtil;
-import hulearnSideProject.com.hulearn.dto.ErrorResponse;
-import hulearnSideProject.com.hulearn.dto.image.ImageDto;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas.YN;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
-import hulearnSideProject.com.hulearn.mapper.PatientMapper;
-import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
-import hulearnSideProject.com.hulearn.repository.TuserPatiImgInfRepository;
-import hulearnSideProject.com.hulearn.service.ImageService;
-import hulearnSideProject.com.hulearn.service.PatientService;
+import heuron.com.config.FileSaveUtil;
+import heuron.com.dto.image.ImageDto;
+import heuron.com.entity.pati.TuserPatiBas;
+import heuron.com.entity.pati.TuserPatiImgInf;
+import heuron.com.hulearn.dto.ErrorResponse;
+import heuron.com.mapper.PatientMapper;
+import heuron.com.service.ImageService;
+import heuron.com.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.config;
+package heuron.com.config;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,9 +11,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
-import hulearnSideProject.com.hulearn.service.ImageService;
+import heuron.com.entity.pati.TuserPatiBas;
+import heuron.com.entity.pati.TuserPatiImgInf;
+import heuron.com.service.ImageService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

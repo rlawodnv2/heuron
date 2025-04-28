@@ -1,12 +1,12 @@
-package hulearnSideProject.com.hulearn.service;
+package heuron.com.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.repository.TuserPatiBasRepository;
+import heuron.com.entity.pati.TuserPatiBas;
+import heuron.com.repository.TuserPatiBasRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

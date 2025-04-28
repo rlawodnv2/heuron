@@ -1,9 +1,9 @@
-package hulearnSideProject.com.hulearn.mapper;
+package heuron.com.mapper;
 
-import hulearnSideProject.com.hulearn.dto.image.ImageDto;
-import hulearnSideProject.com.hulearn.dto.patient.PatientDto;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
+import heuron.com.dto.image.ImageDto;
+import heuron.com.dto.patient.PatientDto;
+import heuron.com.entity.pati.TuserPatiBas;
+import heuron.com.entity.pati.TuserPatiImgInf;
 
 public class PatientMapper {
 

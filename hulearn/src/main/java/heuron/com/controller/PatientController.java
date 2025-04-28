@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.controller;
+package heuron.com.controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import hulearnSideProject.com.hulearn.config.FileSaveUtil;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
-import hulearnSideProject.com.hulearn.service.ImageService;
-import hulearnSideProject.com.hulearn.service.PatientService;
+import heuron.com.config.FileSaveUtil;
+import heuron.com.entity.pati.TuserPatiBas;
+import heuron.com.entity.pati.TuserPatiImgInf;
+import heuron.com.service.ImageService;
+import heuron.com.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @Controller

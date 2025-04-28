@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.controller;
+package heuron.com.controller;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
-import hulearnSideProject.com.hulearn.service.ImageService;
+import heuron.com.entity.pati.TuserPatiImgInf;
+import heuron.com.service.ImageService;
 import lombok.RequiredArgsConstructor;
 
 @Controller

@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.dto;
+package heuron.com.hulearn.dto;
 
 import lombok.Getter;
 import lombok.Setter;

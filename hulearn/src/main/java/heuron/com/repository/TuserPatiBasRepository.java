@@ -1,11 +1,11 @@
-package hulearnSideProject.com.hulearn.repository;
+package heuron.com.repository;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
+import heuron.com.entity.pati.TuserPatiBas;
 
 public interface TuserPatiBasRepository extends JpaRepository<TuserPatiBas, Integer> {
 

@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.controller;
+package heuron.com.controller;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import hulearnSideProject.com.hulearn.dto.ErrorResponse;
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiBas;
-import hulearnSideProject.com.hulearn.service.PatientService;
+import heuron.com.entity.pati.TuserPatiBas;
+import heuron.com.hulearn.dto.ErrorResponse;
+import heuron.com.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

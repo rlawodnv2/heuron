@@ -1,10 +1,10 @@
-package hulearnSideProject.com.hulearn.repository;
+package heuron.com.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import hulearnSideProject.com.hulearn.entity.pati.TuserPatiImgInf;
+import heuron.com.entity.pati.TuserPatiImgInf;
 
 public interface TuserPatiImgInfRepository extends JpaRepository<TuserPatiImgInf, Integer> {
 

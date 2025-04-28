@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.config;
+package heuron.com.config;
 
 import java.util.HashMap;
 import java.util.Map;

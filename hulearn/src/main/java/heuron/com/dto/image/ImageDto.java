@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.dto.image;
+package heuron.com.dto.image;
 
 import java.time.LocalDate;
 

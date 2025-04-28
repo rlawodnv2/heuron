@@ -1,4 +1,4 @@
-package hulearnSideProject.com.hulearn.entity.pati;
+package heuron.com.entity.pati;
 
 import java.time.LocalDate;
 import java.util.List;
